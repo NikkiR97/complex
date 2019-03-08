@@ -12,6 +12,7 @@
 #include "SymTabEntryImpl.h"
 #include "../TypeSpec.h"
 #include "../TypeFactory.h"
+#include "../SymTabFactory.h"
 #include "../SymTabStack.h"
 #include "../typeimpl/TypeSpecImpl.h"
 #include "../../Object.h"
@@ -83,11 +84,26 @@ void Predefined::initialize_types(SymTabStack *symtab_stack)
     char_id->set_typespec(char_type);
 
     //Complex Type
+
     complex_id = symtab_stack->enter_local("complex");
-    complex_type = TypeFactory::create_type((TypeForm) TF_SCALAR);
+    complex_type = TypeFactory::create_type((TypeForm) TF_RECORD);
     complex_type->set_identifier(complex_id);
     complex_id->set_definition((Definition) DF_TYPE);
     complex_id->set_typespec(complex_type);
+
+    SymTab *cTab = SymTabFactory::create_symtab(0);
+    complex_type->set_attribute((TypeKey) RECORD_SYMTAB,
+                                       cTab);
+
+    re_id = cTab->enter("re");
+    re_id -> set_definition((Definition) DF_FIELD);
+    re_id -> set_typespec(real_type);
+
+    im_id = cTab -> enter("im");
+    im_id -> set_definition((Definition) DF_FIELD);
+    im_id->set_typespec(real_type);
+
+
 
     // Undefined type.
     undefined_type = TypeFactory::create_type((TypeForm) TF_SCALAR);
