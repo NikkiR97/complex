@@ -28,6 +28,7 @@ public:
     static TypeSpec *boolean_type;
     static TypeSpec *char_type;
     static TypeSpec *undefined_type;
+    static TypeSpec *complex_type;
 
     // Predefined identifiers.
     static SymTabEntry *integer_id;
